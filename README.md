@@ -6,12 +6,4 @@ This library enables your esp8266 to simulate a Belkin Wemo switch. It can be di
 
 The library supports emulating up to 14 switches using 1 ESP8266 chip.
 
-## Installing
 
-The downloaded code can be included as a new library into the IDE selecting the menu:
-
-     Sketch / include Library / Add .Zip library
-
-Restart the Arduino IDE and follow the examples located at
-
-     File -> Examples -> Esp8266AlexaWemoEmulator
