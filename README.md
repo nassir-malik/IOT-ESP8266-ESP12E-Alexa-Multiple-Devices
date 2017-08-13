@@ -1,6 +1,6 @@
 #Arduino Esp8266 Alexa Wemo switch emulator
 
-Youtube tutorial https://www.youtube.com/watch?v=OC6QSXzkQU8
+youtube tutorial https://www.youtube.com/watch?v=OC6QSXzkQU8
 
 This project is completly based on the [repo](https://github.com/kakopappa/arduino-esp8266-alexa-multiple-wemo-switch), all the hard work was done by kakopappa.
 
