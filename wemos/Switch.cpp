@@ -115,14 +115,23 @@ void Switch::handleUpnpControl(){
   Serial.print("request:");
   Serial.println(request);
 
-  if(request.indexOf("<BinaryState>1</BinaryState>") > 0) {
-      Serial.println("Got Turn on request");
-      onCallback();
+  if(request.indexOf("SetBinaryState") >= 0) {
+    if(request.indexOf("<BinaryState>1</BinaryState>") >= 0) {
+        Serial.println("Got Turn on request");
+        switchStatus = onCallback();
+        sendRelayState();
+    }
+
+    if(request.indexOf("<BinaryState>0</BinaryState>") >= 0) {
+        Serial.println("Got Turn off request");
+        switchStatus = offCallback();
+        sendRelayState();
+    }
   }
 
-  if(request.indexOf("<BinaryState>0</BinaryState>") > 0) {
-      Serial.println("Got Turn off request");
-      offCallback();
+  if(request.indexOf("GetBinaryState") >= 0) {
+    Serial.println("Got binary state request");
+    sendRelayState();
   }
   
   server->send(200, "text/plain", "");
@@ -173,7 +182,23 @@ void Switch::handleSetupXml(){
 String Switch::getAlexaInvokeName() {
     return device_name;
 }
+void Switch::sendRelayState() {
+  String body = 
+      "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body>\r\n"
+      "<u:GetBinaryStateResponse xmlns:u=\"urn:Belkin:service:basicevent:1\">\r\n"
+      "<BinaryState>";
+      
+  body += (switchStatus ? "1" : "0");
+  
+  body += "</BinaryState>\r\n"
+      "</u:GetBinaryStateResponse>\r\n"
+      "</s:Body> </s:Envelope>\r\n";
+  
+  server->send(200, "text/xml", body.c_str());
 
+  Serial.print("Sending :");
+  Serial.println(body);
+}
 void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
   Serial.println("");
   Serial.print("Sending response to ");
