@@ -10,10 +10,10 @@
 boolean connectWifi();
 
 //on/off callbacks 
-void officeLightsOn();
-void officeLightsOff();
-void kitchenLightsOn();
-void kitchenLightsOff();
+bool officeLightsOn();
+bool officeLightsOff();
+bool kitchenLightsOn();
+bool kitchenLightsOff();
 
 // Change this before you flash
 //#######################################
@@ -31,7 +31,8 @@ UpnpBroadcastResponder upnpBroadcastResponder;
 
 Switch *office = NULL;
 Switch *kitchen = NULL;
-
+bool isOfficeLightsOn = false;
+bool isKitchenLightstsOn = false;
 
 void setup()
 {
@@ -65,24 +66,28 @@ void loop()
 	 }
 }
 
-void officeLightsOn() {
+bool officeLightsOn() {
     Serial.print("Switch 1 turn on ...");
     digitalWrite(relayPin1, HIGH);
+    return true;
 }
 
-void officeLightsOff() {
+bool officeLightsOff() {
     Serial.print("Switch 1 turn off ...");
     digitalWrite(relayPin1, LOW);
+    return false;
 }
 
-void kitchenLightsOn() {
+bool kitchenLightsOn() {
     Serial.print("Switch 2 turn on ...");
     digitalWrite(relayPin2, HIGH);
+    return true;
 }
 
-void kitchenLightsOff() {
+bool kitchenLightsOff() {
   Serial.print("Switch 2 turn off ...");
   digitalWrite(relayPin2, LOW);
+  return false;
 }
 
 // connect to wifi – returns true if successful or false if not
